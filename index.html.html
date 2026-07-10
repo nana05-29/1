@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>夏子越 · 个人作品集</title>
+<style>
+  /* ============ 核心颜色变量 ============ */
+  :root {
+    --bg: #FBF6F4;              /* 页面背景：浅粉白 */
+    --panel: #FFFFFF;           /* 卡片背景：纯白 */
+    --ink: #3B3733;             /* 主文本：暖炭黑 */
+    --ink-soft: #8C8079;        /* 次要文本：灰棕 */
+    --line: #F1E4DF;            /* 边框分割线 */
+    --pink: #E8919C;            /* 主题色：粉色 */
+    --pink-deep: #D97686;       /* 主题色：深粉 */
+    --pink-soft: #FBE8EA;       /* 浅粉背景 */
+    --gold: #B79868;            /* 点缀色：香槟金 */
+    --shadow: 0 8px 24px rgba(59,55,51,0.06);
+    --shadow-hover: 0 14px 32px rgba(59,55,51,0.12);
+    --radius: 16px;
+  }
+
+  /* ============ 基础重置 ============ */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============ 背景装饰 ============ */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .blob-1 { width: 400px; height: 400px; background: var(--pink-soft); top: -100px; right: -100px; }
+  .blob-2 { width: 300px; height: 300px; background: #F3E3D3; bottom: -50px; left: -50px; }
+
+  /* ============ 主容器 ============ */
+  .app-container {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 30px 20px 80px;
+  }
+
+  /* ============ 顶部导航 ============ */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  .brand {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .nav-tabs {
+    display: flex;
+    gap: 8px;
+    background: var(--panel);
+    padding: 6px;
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tabs button {
+    border: none;
+    background: transparent;
+    padding: 10px 18px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .nav-tabs button:hover {
+    color: var(--pink-deep);
+    background: var(--pink-soft);
+  }
+  .nav-tabs button.active {
+    color: #fff;
+    background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+    box-shadow: 0 4px 12px rgba(232,145,156,0.4);
+  }
+
+  /* ============ 内容面板切换动画 ============ */
+  .panel {
+    display: none;
+    animation: fadeIn 0.5s ease forwards;
+  }
+  .panel.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ 通用卡片 ============ */
+  .card {
+    background: var(--panel);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 40px;
+    margin-bottom: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+  @media (max-width: 768px) { .card { padding: 25px; } }
+
+  /* ============ 首页：个人简介 ============ */
+  .hero-section {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+  }
+  @media (max-width: 768px) { 
+    .hero-section { flex-direction: column; text-align: center; } 
+  }
+  
+  .avatar-wrapper {
+    flex: none;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    padding: 6px;
+    background: linear-gradient(135deg, var(--pink), var(--gold));
+    box-shadow: var(--shadow);
+  }
+  .avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--pink-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: var(--pink-deep);
+    font-size: 48px;
+    font-weight: bold;
+  }
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-info h1 { margin: 0 0 10px; font-size: 32px; }
+  .tag {
+    display: inline-block;
+    background: var(--pink-soft);
+    color: var(--pink-deep);
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  .info-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+  }
+  @media (max-width: 768px) { .info-list { justify-content: center; } }
+  .info-list span { display: flex; align-items: center; gap: 6px; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+  
+  .about-text {
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+    margin-top: 20px;
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+  .about-text h3 { color: var(--ink); margin-bottom: 10px; font-size: 18px;}
+
+  /* ============ 时间线 (项目/实习) ============ */
+  .timeline { padding-left: 20px; border-left: 2px solid var(--pink-soft); margin-top: 20px; }
+  .timeline-item { position: relative; padding-bottom: 40px; padding-left: 20px; }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -27px;
+    top: 5px;
+    width: 12px; height: 12px;
+    background: var(--panel);
+    border: 3px solid var(--pink);
+    border-radius: 50%;
+  }
+  
+  .tl-header { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: baseline; margin-bottom: 10px;}
+  .tl-title { font-size: 18px; font-weight: bold; color: var(--ink); }
+  .tl-time { font-size: 14px; color: var(--ink-soft); background: var(--bg); padding: 4px 12px; border-radius: 999px; margin-top: 5px;}
+  .tl-content { color: var(--ink-soft); font-size: 14.5px; }
+  .tl-content ul { padding-left: 20px; margin: 10px 0; }
+
+  /* ============ 链接按钮 ============ */
+  .link-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+  .link-btn {
+    text-decoration: none;
+    color: var(--pink-deep);
+    background: var(--pink-soft);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .link-btn:hover { background: var(--pink); color: #fff; }
+
+  /* ============ 荣誉/技能 ============ */
+  .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .skill-card {
+    border: 1px solid var(--line);
+    padding: 20px;
+    border-radius: 12px;
+    background: var(--bg);
+  }
+  .skill-icon { font-size: 24px; margin-bottom: 10px; }
+  .skill-title { font-weight: bold; margin-bottom: 10px; color: var(--ink); }
+  
+  .progress-wrap { margin-bottom: 15px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; color: var(--ink-soft);}
+  .progress-bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--pink), var(--gold)); width: 0%; transition: width 1s ease-out; }
+
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="app-container">
+  
+  <header class="navbar">
+    <div class="brand">夏子越的作品集</div>
+    <nav class="nav-tabs">
+      <button class="active" data-target="home">首页简介</button>
+      <button data-target="projects">项目经历</button>
+      <button data-target="internships">实习经历</button>
+      <button data-target="campus">校园经历</button>
+      <button data-target="skills">技能特长</button>
+    </nav>
+  </header>
+
+  <section id="home" class="panel active">
+    <div class="card hero-section">
+      <div class="avatar-wrapper">
+        <div class="avatar" id="avatar">夏</div>
+      </div>
+      <div class="hero-info">
+        <span class="tag">市场营销 · 编剧</span>
+        <h1>夏子越</h1>
+        <div class="info-list">
+          <span><i class="dot"></i> 21岁 / 2027届本科毕业</span>
+          <span><i class="dot"></i> 汉语言文学专业</span>
+          <span><i class="dot"></i> 18667107521</span>
+          <span><i class="dot"></i> yeye050529</span>
+          <span><i class="dot"></i> 3372281823@qq.com</span>
+        </div>
+        <div class="about-text">
+          <p style="margin-top:0;"><strong>主修课程：</strong>基础写作、中国现当代文学、外国文学、现代汉语、中国古代文学、古代汉语、中国现代通俗文学、美学概论、中外影视文学、新闻理论写作等。</p>
+          <h3>自我评价</h3>
+          <p><strong>市场营销岗：</strong>拥有完整产品营销实战经验，参与过全国、省级营销赛事并获奖。可以独立完成用户调研、竞品分析，撰写整套营销策划方案；擅长小红书内容种草、私域社群运营，落地线上线下营销活动并完成数据复盘与转化。熟悉年轻人线上传播逻辑，能借助 AI 工具辅助文案、市场分析工作，团队协作与落地执行能力稳定。</p>
+          <p><strong>编剧岗：</strong>有海外短剧完整创作实操经历，多部剧本已上线海外短剧平台。能够独立拆解爆款剧集、搭建人物设定、撰写故事大纲与分集剧本；熟练使用 AI 辅助创意发散、剧本润色，文字功底扎实，能结合市场流量需求产出商业化故事脚本。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="panel">
+    <div class="card">
+      <h2 style="margin-top:0;">项目经历</h2>
+      <div class="timeline">
+        
+        <div class="timeline-item">
+          <div class="tl-header">
+            <div class="tl-title">春夏“全场景防晒系列”营销策划</div>
+            <div class="tl-time">2025.6 - 2025.10</div>
+          </div>
+          <div class="tl-content">
+            <ul>
+              <li><strong>项目成果：</strong>带领团队在第十届全国大学生公共关系策划创业大赛中，获全国一等奖、省级一等奖。</li>
+              <li><strong>市场洞察：</strong>主导Z世代消费者及美妆竞品调研，基于500+份用户问卷与行业大数据精确提炼品牌公关痛点，输出行业策略支撑报告。</li>
+              <li><strong>创意策划：</strong>原创品牌IP并引入AI智能体、AR互动及H5游戏，联动校园赛事、IP快闪及地图跨界活动，打造高网感跨界营销，实现圈层高频破圈。</li>
+            </ul>
+            <div class="link-group">
+              <a href="https://rcntyvuf5ik1.feishu.cn/wiki/AnXXw9cSXiXCy0ksbODcyXpJnke?from=from_copylink" target="_blank" class="link-btn">📄 营销策划案</a>
+              <a href="https://rcntyvuf5ik1.feishu.cn/wiki/VzWAwaKj9i7EXBksE1tcCGTKnAe?from=from_copylink" target="_blank" class="link-btn">📊 项目报告</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="tl-header">
+            <div class="tl-title">曼秀雷敦校园营销实战</div>
+            <div class="tl-time">2024.10 - 2024.12</div>
+          </div>
+          <div class="tl-content">
+            <ul>
+              <li><strong>市场洞察：</strong>完成竞品及目标客群调研分析，精准定位年轻用户诉求，输出针对性品牌营销推广策略。</li>
+              <li><strong>内容与转化：</strong>负责运营线上私域社群及高粘性种草内容策划，同步落地线下地推引流；动态迭代促销方案，实战期团队累计成交3726.9元并输出运营复盘报告。</li>
+            </ul>
+            <div class="link-group">
+              <a href="https://rcntyvuf5ik1.feishu.cn/wiki/W8y1wfkoOii64Jkb3qIcGzSNnoh?from=from_copylink" target="_blank" class="link-btn">📄 营销策划案</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="tl-header">
+            <div class="tl-title">自媒体运营 | 个人账号</div>
+            <div class="tl-time">2023.6 - 至今</div>
+          </div>
+          <div class="tl-content">
+            <ul>
+              <li><strong>账号成果：</strong>独立注册并运营小红书推文账号，全网累计收获3379次赞与收藏。</li>
+              <li><strong>爆款案例：</strong>打造多篇高互动笔记，单篇最高获得3.6万+浏览量和近700次点赞，具备独立写出爆款种草内容的能力。</li>
+            </ul>
+            <div class="link-group">
+              <a href="https://xhslink.com/m/1BL5zi52yM8" target="_blank" class="link-btn">📱 账号主页</a>
+              <a href="http://xhslink.com/o/6jcIAk3a2xh" target="_blank" class="link-btn">🔥 爆款笔记 1</a>
+              <a href="http://xhslink.com/o/6jcIAk3a2xh" target="_blank" class="link-btn">🔥 爆款笔记 2</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="internships" class="panel">
+    <div class="card">
+      <h2 style="margin-top:0;">实习经历</h2>
+      <div class="timeline">
+        
+        <div class="timeline-item">
+          <div class="tl-header">
+            <div class="tl-title">编剧 · 杭州默默发财动画有限公司</div>
+            <div class="tl-time">2026.3 - 2026.7</div>
+          </div>
+          <div class="tl-content">
+            <p><strong>一、工作内容</strong></p>
+            <ol>
+              <li>协助部门分析海外爆款短剧内容，拆解各类短剧题材、人物人设、叙事节奏、核心爽点、反转设计等创作规律，输出内容分析文档，为公司AI真人短剧项目提供内容支撑。</li>
+              <li>熟练运用AI工具辅助短剧创作，完成项目创意发散、故事大纲梳理、分集剧情扩写、人物台词润色以及多版本剧本修改工作。</li>
+              <li>独立承接剧本创作任务，稳定输出分集剧本，全程参与短剧从构思到定稿的完整创作流程。</li>
+            </ol>
+            <p><strong>二、实习成果</strong></p>
+            <ul>
+              <li>参与海外上线AI真人短剧《Owned by the Bad Boy Athlete》（中文译名：明星记者一夜情）第14-35集剧本撰写；该剧已在海外主流短剧平台播出。</li>
+            </ul>
+            <div class="link-group" style="padding-left: 20px; margin-bottom: 10px;">
+              <a href="https://netshort.com/episode/owned-by-the-bad-boy-athlete-2057991517238726657" target="_blank" class="link-btn">🎬 NetShort</a>
+              <a href="https://www.dramaboxdb.com/ep/42000013015_owned-by-the-bad-boy-athlete/700830339_Episode-1" target="_blank" class="link-btn">🎬 Drama Box</a>
+              <a href="https://www.reelshort.com/episodes/episode-1-owned-by-the-bad-boy-athlete-6a0d4eda8f2cd3e9b701330c-90gibkmyaz?play_time=1" target="_blank" class="link-btn">🎬 ReelShort</a>
+              <a href="https://www.flickreels.net/movie/owned-by-the-bad-boy-athlete-7225" target="_blank" class="link-btn">🎬 FlareFlicks</a>
+              <a href="https://m.mydramawave.com/share/episode/48WJ91Ru3T?language=zh&share_user_id=43446024703&from=share" target="_blank" class="link-btn">🎬 DramaWave</a>
+            </div>
+            <ul>
+              <li>独立创作42集完本短剧剧本《Moon Constant Debt Forbidden Kiss》（中文译名：血月之契），该剧已在iQIYI海外平台上线播出。</li>
+            </ul>
+            <div class="link-group" style="padding-left: 20px; margin-bottom: 10px;">
+              <a href="https://www.iq.com/share-short/hxgwg6kri4?isShort=1&sh_pltf=4&lang=en_us" target="_blank" class="link-btn">🎬 iQIYI</a>
+            </div>
+            <ul>
+              <li>独立创作60集完本短剧剧本《女武神归来》，该项目暂未投入制作。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="tl-header">
+            <div class="tl-title">新媒体运营 · 杭州网易元气科技有限公司</div>
+            <div class="tl-time">2025.11 - 2026.3</div>
+          </div>
+          <div class="tl-content">
+            <p><strong>一、工作内容</strong><br>负责市场营销和内容推广，追踪小红书、抖音热门圈层文章，进行优质原生内容和热点选题的策划加热。</p>
+            <p><strong>二、实习成果</strong><br>负责运营小红书、抖音官方账号，独立产出同人安利笔记，单篇实现1,616浏览量与160+点赞，具备良好的网感与转化效果。</p>
+            <div class="link-group">
+              <a href="http://xhslink.com/o/9i9f0qUIukI" target="_blank" class="link-btn">🔥 爆款笔记 1</a>
+              <a href="http://xhslink.com/o/5a0HUjgnlCb" target="_blank" class="link-btn">🔥 爆款笔记 2</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="tl-header">
+            <div class="tl-title">实习助理 · 杭州市综合保税区</div>
+            <div class="tl-time">2024.12 - 2025.9</div>
+          </div>
+          <div class="tl-content">
+            <p><strong>一、工作内容</strong></p>
+            <ul>
+              <li>实时搜集网络热点信息，进行分析；</li>
+              <li>撰写单位公众号文案，覆盖政策解读、园区资讯，助力单位宣传；</li>
+              <li>协助组织政务活动，负责嘉宾对接、物料筹备及活动反馈整理，保障活动落地。</li>
+            </ul>
+            <p><strong>二、实习成果</strong></p>
+            <div class="link-group">
+              <a href="https://mp.weixin.qq.com/s/6EXOcg58RyOkO208PO2N5g" target="_blank" class="link-btn">📱 公众号推文</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="campus" class="panel">
+    <div class="card">
+      <h2 style="margin-top:0;">学生工作</h2>
+      <div class="timeline">
+        <div class="timeline-item" style="padding-bottom: 10px;">
+          <div class="tl-header">
+            <div class="tl-title">校艺术团负责人 · 中国计量大学子午剧社</div>
+            <div class="tl-time">2024.6 - 2025.8</div>
+          </div>
+          <div class="tl-content">
+            <ul>
+              <li>统筹社团全年展演、年度招新全流程活动策划，带领80+人团队，落地线下舞台演出10+场，累计线下观演30000+人次；</li>
+              <li>负责剧本创作，舞台、服化道设计；负责艺术团公众号全周期运营，独立产出演出宣传推文8+篇。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-top:0;">荣誉证书</h2>
+      <div class="grid-layout" style="grid-template-columns: 1fr;">
+        <ul style="color: var(--ink-soft); line-height: 2;">
+          <li>2025年12月获 浙江省大学生艺术节省级优秀创作奖</li>
+          <li>2025年12月获 浙江省大学生艺术节戏剧组省级一等奖</li>
+          <li>2025年9月获 第十届中国大学生公共关系策划创业大赛国家级一等奖</li>
+          <li>2025年11月获 “恒源祥”杯浙江省第八届大学生公共关系策划大赛省级一等奖</li>
+          <li>2024年10月获 钱塘区“潮起钱塘，青春智“荟”政协模拟活动大学生组入围奖</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="panel">
+    <div class="card">
+      <h2 style="margin-top:0;">技能特长</h2>
+      <div class="grid-layout">
+        
+        <div class="skill-card">
+          <div class="skill-icon">✍️</div>
+          <div class="skill-title">综合能力与语言</div>
+          <p style="font-size:14px; color:var(--ink-soft); margin-top:0;">擅长品牌公关策划、小红书种草文案、活动宣传稿撰写，具备爆款内容打造能力。</p>
+          
+          <div class="progress-wrap">
+            <div class="progress-label"><span>英语 CET-6</span><span>通过</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="100%"></div></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-label"><span>普通话 二甲</span><span>通过</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="100%"></div></div>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-icon">📈</div>
+          <div class="skill-title">营销执行能力</div>
+          <p style="font-size:14px; color:var(--ink-soft); margin-top:0;">熟练市场调研、竞品分析、私域社群与短视频平台运营，可落地全渠道活动并完成数据复盘。</p>
+          <div class="progress-wrap">
+            <div class="progress-label"><span>营销全案策划</span><span>90%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="90%"></div></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-label"><span>活动落地执行</span><span>95%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="95%"></div></div>
+          </div>
+        </div>
+
+        <div class="skill-card" style="grid-column: 1 / -1;">
+          <div class="skill-icon">🛠️</div>
+          <div class="skill-title">工具运用与作品展示</div>
+          <p style="font-size:14px; color:var(--ink-soft); margin-top:0;">
+            熟练使用 <strong>ChatGPT、即梦、Gemini</strong> 等AI工具，可进行数据分析，制作交互网站等（具备 Prompt 经验）；<br>
+            熟练运用 <strong>PS、剪映、可画</strong> 等软件，可独立完成宣传海报、短视频剪辑制作。
+          </p>
+          <div class="link-group">
+            <a href="https://b23.tv/eI9KpEB" target="_blank" class="link-btn">🎨 手绘动画制作</a>
+            <a href="https://rcntyvuf5ik1.feishu.cn/wiki/DwvgwKYL2iG90OkU29FcXVadnUd?from=from_copylink" target="_blank" class="link-btn">🖼️ PS设计作品 1</a>
+            <a href="https://rcntyvuf5ik1.feishu.cn/wiki/D8xzwG2aNiaGz1khrllcZ3q8nGc?from=from_copylink" target="_blank" class="link-btn">🖼️ PS设计作品 2</a>
+            <a href="https://rcntyvuf5ik1.feishu.cn/wiki/R9Rww62EcimuO5kL4cpc8bHPn5g?from=from_copylink" target="_blank" class="link-btn">🖼️ PS设计作品 3</a>
+            <a href="https://rcntyvuf5ik1.feishu.cn/wiki/EA1BwBWNKiWsUckNTKxc9vDfnRf?from=from_copylink" target="_blank" class="link-btn">🖼️ PS设计作品 4</a>
+            <a href="https://rcntyvuf5ik1.feishu.cn/wiki/IsX3wXGI1i1quIk35pLcgo0anRh?from=from_copylink" target="_blank" class="link-btn">🖼️ PS设计作品 5</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // ============ 1. 导航栏标签切换逻辑 ============
+  const tabs = document.querySelectorAll('.nav-tabs button');
+  const panels = document.querySelectorAll('.panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      
+      tab.classList.add('active');
+      const targetId = tab.getAttribute('data-target');
+      document.getElementById(targetId).classList.add('active');
+
+      if(targetId === 'skills') {
+        setTimeout(animateProgressBars, 100);
+      }
+    });
+  });
+
+  // ============ 2. 进度条动画函数 ============
+  function animateProgressBars() {
+    const bars = document.querySelectorAll('.progress-fill');
+    bars.forEach(bar => {
+      bar.style.width = '0';
+      setTimeout(() => {
+        bar.style.width = bar.getAttribute('data-width');
+      }, 50);
+    });
+  }
+
+  // ============ 3. 头像优先级探测函数 ============
+  function loadAvatar() {
+    const avatarEl = document.getElementById('avatar');
+    const candidates = ['avatar.png', 'avatar.jpg', 'avatar.jpeg'];
+    let currentIndex = 0;
+
+    function tryNextImage() {
+      if (currentIndex >= candidates.length) {
+        return; 
+      }
+      const imgSrc = candidates[currentIndex];
+      const img = new Image();
+      
+      img.onload = function() {
+        avatarEl.innerHTML = '';
+        const realImg = document.createElement('img');
+        realImg.src = imgSrc;
+        realImg.alt = '夏子越照片';
+        avatarEl.appendChild(realImg);
+      };
+      
+      img.onerror = function() {
+        currentIndex++;
+        tryNextImage();
+      };
+      
+      img.src = imgSrc;
+    }
+
+    tryNextImage();
+  }
+
+  window.onload = loadAvatar;
+</script>
+</body>
+</html>
